@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/mainLayout">
+<body>
+	<div class="container" layout:fragment="content">
+		<h3 class="text-center">Add Project</h3>
+		<div class="col-md-8 col-md-offset-2">
+			<form id="form" action="#" th:action="@{/project/add}"
+				th:object="${project}" method="post">
+				<div class="form-group">
+					<label th:for="name">Name</label> <input type="text"
+						class="form-control" th:field="*{name}"
+						data-validation="alphanumeric" data-validation-allowing=" .,-_" />
+				</div>
+				<div class="form-group">
+					<label>Project Duration: </label>
+					<div class="input-daterange input-group" id="datepicker">
+						<input type="text" class="input-sm form-control" id="start" /> <span
+							class="input-group-addon">to</span> <input type="text"
+							class="input-sm form-control" id="end" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label>Company: </label>
+					<select class="form-control" th:field="*{company}" id="dropCompany">
+						<option value="0">Select Company</option>
+						<option th:each="c : ${companies}" th:value="${c.companyId}"
+							th:text="${c.name}"></option>
+					</select>
+				</div>
+				<input type="hidden" th:field="*{dateStart}"></input> <input
+					type="hidden" th:field="*{dateEnd}"></input>
+				<button type="submit" id="submit"
+					class="btn btn-primary btn-large pull-right">Submit</button>
+				<span th:text="${error}"></span>
+			</form>
+		</div>
+	</div>
+
+	<script layout:fragment="scripts">
+		$(document).ready(
+				function() {
+					$.validate({
+						modules : 'html5'
+					})
+					var inputDateRange = $('.input-daterange').datepicker();
+					$('#form').submit(
+							function() {
+								var start = $('.input-daterange #start')
+										.datepicker("getDate").getTime()
+								var end = $('.input-daterange #end')
+										.datepicker("getDate").getTime()
+								$('#dateStart').val(start)
+								$('#dateEnd').val(end)
+							})
+				})
+	</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/mainLayout">
+<body>
+	<div class="container-fluid" layout:fragment="content">
+		<div class="col-md-8 col-md-offset-2">
+			<h3 class="text-center text-danger">Error</h3>
+			<a class="btn btn-danger btn-block" th:href="@{/}">Return to home</a>
+		</div>
+	</div>
+</body>
+
+</html>

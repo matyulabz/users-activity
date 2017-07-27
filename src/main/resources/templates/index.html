@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/mainLayout">
+<body>
+	<div class="container" layout:fragment="content">
+		<a class="btn btn-primary" role="button" th:href="@{/user/list}">View Users</a> 
+		<a class="btn btn-primary" role="button" th:href="@{/company/list}">View Companies</a>
+		<a class="btn btn-primary" role="button" th:href="@{/task/list}">View Tasks</a>
+		<a class="btn btn-primary" role="button" th:href="@{/project/list}">View Project</a>
+	</div>
+</body>
+</html>

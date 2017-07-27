@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/mainLayout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-
+springsecurity3">
+<body>
+	<div class="container" layout:fragment="content">
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<h1 class="text-center">
+					Project <span th:text="${project.id}"></span> -- <span
+						th:text="${project.name}"></span>
+				</h1>
+				<h3 class="text-center">
+					Duration: <span
+						th:text="${#dates.format(project.dateStart, 'dd-MMMM-yyyy')}"></span>
+					to <span
+						th:text="${#dates.format(project.dateEnd, 'dd-MMMM-yyyy')}"></span>
+				</h3>
+				<div th:if="${!project.done}">
+					<button sec:authorize="hasRole('ROLE_ADMIN')"
+						class="btn btn-warning" id="assignProjectBtn"
+						th:disabled="${#lists.isEmpty(users)}"
+						th:text="${#lists.isEmpty(users)}? 'No more users' : 'Assign project'"
+						th:attr="data-toggle='modal', data-target='#assignProj'"></button>
+					<button class="btn btn-primary" id="addTaskBtn"
+						th:attr="data-toggle='modal', data-target='#addTask'">Add
+						task</button>
+				</div>
+				<a class="pull-right btn btn-success" role="button"
+					th:href="@{/project/list}">Back to projects</a>
+			</div>
+		</div>
+		<!-- MODALS -->
+		<div class="modal fade" id="assignProj" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Assign Project</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label th:for="assignedUser">Assign project to:</label> <select
+								class="form-control" multiple="multiple"
+								id="usersProjectDropdown">
+								<option th:each="u : ${users}" th:value="${u.id}"
+									th:text="${u.firstName + ' ' + u.lastName}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" id="saveAssignment"
+							th:attr="data-id=${project.id}">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="addTask" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Add Task</h4>
+					</div>
+					<div class="modal-body">
+						<form action="#" th:action="@{/task/add}" id="add-task"
+							th:object="${task}" method="post">
+							<div class="form-group">
+								<label th:for="name">Name</label> <input type="text"
+									class="form-control" th:field="*{name}"
+									data-validation="alphanumeric" data-validation-allowing=" .,-_" />
+							</div>
+							<div class="form-group">
+								<label>Project: </label> <select class="form-control"
+									id="dropProject" disabled="disabled">
+									<option th:text="${project.name}"></option>
+								</select> <input type="hidden" th:attr="name='project'"
+									th:value="${project.id}"></input>
+							</div>
+							<div class="form-group">
+								<label th:for="assignedUser">Assign task to:</label> <select
+									class="form-control" id="usersTaskDropdown"
+									th:field="*{assignedUser}">
+									<option value="0" th:if="${not #lists.isEmpty(project.users)}">Select
+										User</option>
+									<option th:each="u : ${project.users}" th:value="${u.id}"
+										th:text="${u.fullname}"></option>
+								</select>
+
+							</div>
+							<div class="form-group">
+								<label th:for="description">Description</label> <input
+									type="text" class="form-control" th:field="*{description}"
+									data-validation="alphanumeric" data-validation-allowing=" .,-_" />
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" id="saveAddTask"
+							th:attr="data-id=${project.id}">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- END MODALS -->
+	</div>
+	<script layout:fragment="scripts">
+		$(document).ready(function() {
+			$(function() {
+				$('#usersProjectDropdown').selectize();
+			});
+			
+			$("#saveAssignment").click(function() {
+				var projectId = $(this).data("id")
+				var userIds = $("#usersProjectDropdown").val()
+				console.log(userIds)
+				$.ajax({
+					url : "/project/assign",
+					type : "POST",
+					data : {
+						projectId : projectId,
+						userIds : userIds
+					},
+					success : function(result) {
+						location.reload()
+						console.log("success assign project")
+					},
+					error : function(error) {
+						console.log(error)
+					}
+				})
+			});
+			$("#saveAddTask").click(function() {
+				$.ajax({
+					url : "/task/add",
+					type : "POST",
+					data : $("#add-task").serialize(),
+					success : function(result) {
+						location.reload()
+						console.log("success add task")
+					},
+					error : function(error) {
+						console.log(error)
+					}
+				})
+			});
+			$("#addTask").on("shown.bs.modal", function(e) {
+				if ($("#usersTaskDropdown")[0].length != 0) {
+					$("#usersTaskDropdown").prop('disabled', false);
+				} else {
+					$("#usersTaskDropdown").prop('disabled', 'disabled');
+					$("#usersTaskDropdown").append("<option>No users assigned to this project (Assign first)</option>");
+				}
+			});
+		})
+	</script>
+</body>
+</html>

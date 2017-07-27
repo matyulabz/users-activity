@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/mainLayout">
+<body>
+	<div class="container" layout:fragment="content">
+		<h3 class="text-center">Add Task</h3>
+		<div class="col-md-8 col-md-offset-2">
+			<form action="#" th:action="@{/task/add}" th:object="${task}"
+				method="post">
+				<div class="form-group">
+					<label th:for="name">Name</label> <input type="text"
+						class="form-control" th:field="*{name}"
+						data-validation="alphanumeric" data-validation-allowing=" .,-_" />
+				</div>
+				<div class="form-group">
+					<label>For project:</label> <select class="form-control"
+						th:field="*{project}" id="dropProject">
+						<option value="0">Select Project</option>
+						<option th:each="p : ${projects}" th:value="${p.id}"
+							th:text="${p.name}"></option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label th:for="description">Description</label> <input type="text"
+						class="form-control" th:field="*{description}"
+						data-validation="alphanumeric" data-validation-allowing=" .,-_" />
+				</div>
+				<button type="submit" class="btn btn-primary btn-large pull-right">Submit</button>
+			</form>
+		</div>
+	</div>
+
+	<script layout:fragment="scripts">
+		$(document).ready(function() {
+			$.validate({
+				modules : 'html5'
+			})
+		})
+	</script>
+</body>
+</html>

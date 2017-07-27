@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/mainLayout">
+<body>
+	<div class="container" layout:fragment="content">
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<div class="row">
+					<h1 th:text="${company.name}"></h1>
+				</div>
+				<div class="row">
+					<h3 class="text-center" th:text="${company.address}"></h3>
+					<div id="location" class="form-group">
+						<div class="col-md-12">
+							<label for="map">Location</label>
+							<div id="map" style="width: auto; height: 320px"
+								class="form-group"></div>
+						</div>
+					</div>
+				</div>
+				<h4>Users: </h4>
+				<div th:each="u : ${users}">
+					<p th:text="${u.firstName + ' ' + u.lastName}"></p>
+				</div>
+				
+				<a class="pull-right btn btn-success" role="button"
+					th:href="@{/company/list/}">Back to companies</a>
+			</div>
+		</div>
+	</div>
+	<script layout:fragment="scripts" th:inline="javascript">
+		//<![CDATA[
+		$(document).ready(function() {
+				
+			var lat = /*[[${company.location.latitude}]]*/
+			var lng = /*[[${company.location.longitude}]]*/
+			
+			var leafletMaptrackingMap = L.map('map', {
+				id : 'trackingMap'
+			}).setView([ lat, lng ], 13);
+			
+			updateAddress(lat, lng)
+			
+			leafletMaptrackingMap.addControl(new L.Control.Search({
+				url : 'https://nominatim.openstreetmap.org/search?format=json&q={s}',
+				jsonpParam : 'json_callback',
+				propertyName : 'display_name',
+				circleLocation : false,
+				propertyLoc : [ 'lat', 'lon' ]
+			}));
+
+			L.tileLayer(
+				'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+				{
+					id : 'tileLayer_trackingMap',
+					minZoom : 1,
+					maxZoom : 18,
+					attribution : 'Map data &amp;copy; https://openstreetmap.org'
+				}).addTo(leafletMaptrackingMap);
+
+			var marker = L.marker([ lat, lng ], {
+				id : 'marker',
+				"draggable" : false,
+				map : leafletMaptrackingMap
+			});
+
+			marker.addTo(leafletMaptrackingMap);
+
+			function updateAddress(lat, lng) {
+				var url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=";
+				var locationUrl = url + lat + ',' + lng
+						+ '&sensor=false';
+
+				$.getJSON(locationUrl, function(data) {
+					$("#address").val(
+							data.results[0].formatted_address);
+				});
+			}
+
+		})
+		//]]>
+	</script>
+</body>
+</html>

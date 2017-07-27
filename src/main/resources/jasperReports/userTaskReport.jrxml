@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="userTaskReport" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="483ed344-f23c-4ce8-bd56-fe41b02833af">
+	<property name="ireport.zoom" value="1.1000000000000072"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#FFBFBF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1" uuid="00691539-d37f-4b79-9371-7daf7238a0fa">
+		<field name="name" class="java.lang.String"/>
+		<field name="project" class="java.lang.String"/>
+		<field name="dateCreated" class="java.lang.String"/>
+		<field name="done" class="java.lang.String"/>
+		<field name="dateDone" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="Table Dataset 2" uuid="f3ee9538-6c09-4328-b1ee-f1c4717e25e3"/>
+	<subDataset name="Table Dataset 3" uuid="bdb90e8e-a529-42b0-8c2c-5db0004d437d"/>
+	<parameter name="TASK_OWNER" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="name" class="java.lang.String"/>
+	<field name="project" class="java.lang.String"/>
+	<field name="dateCreated" class="java.lang.String"/>
+	<field name="done" class="java.lang.String"/>
+	<field name="dateDone" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="93" splitType="Stretch">
+			<textField>
+				<reportElement uuid="eb056aed-64a4-4c3b-a644-af8b85ccffd6" x="0" y="56" width="193" height="23"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TASK_OWNER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch">
+			<elementGroup/>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="58" splitType="Stretch">
+			<textField>
+				<reportElement uuid="c55ef652-0590-461a-8662-465616a631f8" x="2" y="38" width="114" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="41c898be-f72f-4a34-8b50-e6db0316b06d" x="116" y="38" width="114" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{project}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="61eb1c4e-071d-4708-8ef5-c2b4084e7d74" x="230" y="38" width="114" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{dateCreated}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="93a0d81a-ae8f-4e1c-ba71-b8854417ab00" x="344" y="38" width="114" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{done}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="bc8dd155-6a3b-448e-8ec9-b75e83cdd89f" x="458" y="38" width="114" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{dateDone}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="23" splitType="Stretch"/>
+	</columnFooter>
+</jasperReport>

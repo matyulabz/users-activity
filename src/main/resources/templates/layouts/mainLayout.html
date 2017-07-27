@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head lang="en">
+<meta http-equiv="Content Type" content="text/html; charset=UTF-8" />
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+<script th:src="@{/js/bootstrap-datepicker.min.js}"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.15/datatables.min.css" />
+<script type="text/javascript"
+	src="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.15/datatables.min.js"></script>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/css/bootstrap-datepicker.min.css}" />
+<script th:src="@{/js/bootstrap-datepicker.min.js}"></script>
+<script
+	src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/css/selectize.bootstrap3.min.css" />
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/js/standalone/selectize.js"></script>
+
+<link rel="stylesheet" type="text/css" th:href="@{/leaflet/leaflet/leaflet.css}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/leaflet/leaflet-search-master/dist/leaflet-search.min.css}" />
+<title>Spring Boot and Thymeleaf Example</title>
+</head>
+<body>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target=".collapse"
+					aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" th:href="@{/}">Activity 2</a>
+			</div>
+			<div class="collapse navbar-collapse"
+				id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a th:href="@{/}">Home</a></li>
+					<li role="separator" class="divider"></li>
+					<li><a th:href="@{/user/list}">Users</a></li>
+					<li><a th:href="@{/company/list}">Companies</a></li>
+					<li><a th:href="@{/task/list}">Task</a></li>
+					<li><a th:href="@{/project/list}">Projects</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a sec:authorize="isAuthenticated()"
+						sec:authentication="name">user</a></li>
+					<li><a th:href="@{/login}" sec:authorize="!isAuthenticated()">Login</a></li>
+					<li><a th:href="@{/logout}" sec:authorize="isAuthenticated()">Logout</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div layout:fragment="content"></div>
+	<script layout:fragment="scripts"></script>
+
+	<script type="text/javascript"
+		th:src="@{/leaflet/leaflet/leaflet.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/leaflet/leaflet-search-master/dist/leaflet-search.min.js}"></script>
+</body>
+</html>

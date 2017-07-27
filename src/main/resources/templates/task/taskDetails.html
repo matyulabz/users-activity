@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/mainLayout">
+<body>
+
+	<div class="container" layout:fragment="content">
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Assign Task</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<select class="form-control" id="usersDropdown">
+								<option value="0">Select User</option>
+								<option th:each="u : ${users}" th:value="${u.id}"
+									th:text="${u.firstName + ' ' + u.lastName}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" id="save-changes"
+							th:attr="data-task-id=${task.id}">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<div class="row">
+					<h1>
+						Task <span th:text="${task.id}"></span>
+					</h1>
+					<div>
+						<label th:for="doneChkBox">Done</label> <input type="checkbox"
+							id="doneChkBox" th:field="${task.done}"
+							th:attr="data-task-id=${task.id}" />
+					</div>
+				</div>
+				<h3 class="text-center" th:text="${task.name}"></h3>
+				<h4 th:text="${task.description}"></h4>
+				<h4 th:text="${task.user}? ${task.user.fullname} : 'Not assigned'"></h4>
+				<button class="btn btn-warning" id="assignTaskBtn"
+					th:attr="data-toggle='modal', data-target='#myModal'">Assign
+					task</button>
+				<a class="pull-right btn btn-success" role="button"
+					th:href="@{/task/list}">Back to tasks</a>
+			</div>
+		</div>
+	</div>
+	<script layout:fragment="scripts">
+		$(document).ready(function() {
+			$("#save-changes").click(function() {
+				var taskId = $(this).data("task-id")
+				var userId = $("#usersDropdown").val()
+				$.ajax({
+					url : "/task/assign",
+					type : "POST",
+					data : {
+						taskId : taskId,
+						userId : userId
+					},
+					success : function(result) {
+						location.reload()
+						console.log("success")
+					},
+					error : function(error) {
+						console.log(error)
+					}
+				})
+			})
+
+			$("#doneChkBox").click(function() {
+				var taskId = $(this).data("task-id")
+				$.ajax({
+					url : "/task/done",
+					type : "POST",
+					data : {
+						taskId : taskId,
+						done : this.checked
+					},
+					success : function(result) {
+						console.log("success")
+					},
+					error : function(error) {
+						console.log(error)
+					}
+				})
+			})
+		})
+	</script>
+</body>
+</html>
