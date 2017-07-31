@@ -41,32 +41,16 @@ public class UploadController {
 		return anonymousPicture;
 	}
 
-	
 	@RequestMapping("/user/upload/{id}")
 	public String uploadPage(@PathVariable long id, Model model, Authentication auth) {
 		User user = userService.findById(id);
-		if(auth.getName().equals(user.getUsername())) {
+		if (auth.getName().equals(user.getUsername())) {
 			model.addAttribute("userId", id);
 			return "/user/photoUpload";
-		}
-		else {
+		} else {
 			return "error";
 		}
 	}
-
-	// @RequestMapping(value = "/preview/{id}", method = RequestMethod.POST)
-	// public String previewPhoto(MultipartFile file, @PathVariable long id,
-	// RedirectAttributes redirectAttrs, Model model)
-	// throws IOException {
-	// if (file.isEmpty() || !isImage(file)) {
-	// redirectAttrs.addFlashAttribute("error", "Incorrect file. Please upload a
-	// picture.");
-	// return "redirect:/upload/" + id;
-	// }
-	// redirectAttrs.addAttribute(photoPreview, );
-	// Files.copy(path, response.getOutputStream());
-	// return "redirect:/upload/" + id;
-	// }
 
 	@RequestMapping(value = "/user/upload/{id}", method = RequestMethod.POST)
 	public String onUpload(MultipartFile file, @PathVariable long id, RedirectAttributes redirectAttrs, Model model)
@@ -78,16 +62,6 @@ public class UploadController {
 		userService.updatePicture(file.getBytes(), id);
 		return "redirect:/user/profile/" + id;
 	}
-
-	// @RequestMapping(value = "/profilePic", method = RequestMethod.GET)
-	// public void showImage(@RequestParam("id") long id, HttpServletResponse
-	// response, HttpServletRequest request)
-	// throws ServletException, IOException {
-	// User user = userService.findById(id);
-	// response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
-	// response.getOutputStream().write(user.getProfilePicture());
-	// response.getOutputStream().close();
-	// }
 
 	@RequestMapping(value = "/uploadedPicture/{id}")
 	public void getUploadedPicture(HttpServletResponse response, @PathVariable long id,

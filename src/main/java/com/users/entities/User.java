@@ -1,8 +1,7 @@
 package com.users.entities;
 
-import java.io.Serializable;
-import java.sql.Blob;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -23,8 +22,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 @Entity
-public class User implements Serializable {
+public class User implements UserDetails {
 
 	/**
 	 * 
@@ -325,6 +327,32 @@ public class User implements Serializable {
 				+ ", lastName=" + lastName + ", address=" + address + ", location=" + location + ", phoneNumber="
 				+ phoneNumber + ", active=" + active + ", roles=" + roles + ", company=" + company + ", dateCreated="
 				+ dateCreated + "]";
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		return authorities;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return active;
 	}
 
 }

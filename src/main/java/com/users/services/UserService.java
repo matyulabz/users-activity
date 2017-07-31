@@ -1,6 +1,5 @@
 package com.users.services;
 
-import java.sql.Blob;
 import java.util.List;
 
 import com.users.entities.Company;
@@ -25,7 +24,7 @@ public interface UserService {
 	List<User> findInProject(List<User> users, Project project);
 	List<User> findNotInProject(List<User> users, Project project);
 	
-	User findByUsername(String username);
+	User loadUserByUsername(String username);
 	
 	User updatePicture(byte[] photo, long userId);
 }
